@@ -1,0 +1,71 @@
+% clc
+% clear
+% FASTAData = fastaread('sequence_ncbi.fasta');
+% mark1 = 0;
+clc
+clear
+FASTAData = fastaread('sequencesdata.fasta');
+mark1 = 1;
+for i = 1:370
+    if isempty(strfind(FASTAData(i).Sequence,'NNNNN')) == 1
+        FASTAData_new(mark1).Sequence = FASTAData(i).Sequence;
+        FASTAData_new(mark1).Header = FASTAData(i).Header;
+        mark1 = mark1+1;
+    end
+end
+
+mark_s1 = 0 ;
+for i = 1:mark1-1
+    for j = i+1:mark1-1
+        
+      if (max(size(FASTAData_new(i).Sequence)) == 29782) && (max(size(FASTAData_new(j).Sequence)) == 29782);
+        mark_s1 = mark_s1+1
+        new_sequence1 = modification_sequence(FASTAData_new(i).Sequence);
+        new_sequence2 = modification_sequence(FASTAData_new(j).Sequence);
+        dd = new_align_fast(new_sequence1,new_sequence2);
+        matrix_29782_29782(mark_s1) = dd;
+       end
+        clear dd
+     end
+ end
+ save('matrix_29782_29782','matrix_29782_29782');
+ %%
+mark_s1 = 0 ;
+for i = 1:mark1-1
+    for j = i+1:mark1-1
+        
+      if (max(size(FASTAData_new(i).Sequence)) == 29782) && (max(size(FASTAData_new(j).Sequence)) == 29903);
+        mark_s1 = mark_s1+1
+        new_sequence1 = modification_sequence(FASTAData_new(i).Sequence);
+        new_sequence2 = modification_sequence(FASTAData_new(j).Sequence);
+        dd = new_align_fast(new_sequence1,new_sequence2);
+        
+
+        matrix_29782_29903(mark_s1) = dd;
+       end
+        clear dd
+     end
+end
+ save('matrix_29782_29903','matrix_29782_29903');
+%  
+mark_s1 = 0 ;
+for i = 1:mark1-1
+    for j = i+1:mark1-1
+        
+      if (max(size(FASTAData_new(i).Sequence)) == 29903) && (max(size(FASTAData_new(j).Sequence)) == 29903);
+        mark_s1 = mark_s1+1
+        new_sequence1 = modification_sequence(FASTAData_new(i).Sequence);
+        new_sequence2 = modification_sequence(FASTAData_new(j).Sequence);
+        dd = new_align_fast(new_sequence1,new_sequence2);
+        
+
+        matrix_29903_29903(mark_s1) = dd;
+       end
+        clear dd
+     end
+end
+ save('matrix_29903_29903','matrix_29903_29903');
+ 
+ [h12,p12] = kstest2(matrix_29782_29782,matrix_29782_29903);
+ [h13,p13] = kstest2(matrix_29782_29782,matrix_29903_29903);
+ [h23,p23] = kstest2(matrix_29782_29903,matrix_29903_29903);
